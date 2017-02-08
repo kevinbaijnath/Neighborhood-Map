@@ -31,26 +31,31 @@ export default class Yelp {
   }
 
   search(term, location){
-    let url = `${this.base_url}/search`
-    $.ajax({
+    let url = `${this.base_url}/search`;
+    console.log('searching');
+    return $.ajax({
       url: url,
       data: this.generateParams(url, term, location),
       cache: true,
-      dataType: 'jsonp',
-      success: function(results) {
-        if(results["businesses"] && results["businesses"].length > 0){
-          let business = results.businesses[0];
-          $("#yelp_link").attr('href',business.url);
-          $("#yelp_rating").attr('src',business.rating_img_url);
-          $('#name').text(term);
-          $('#address').text(location);
-        } else {
-          addErrorAlert(`Unable to find business ${term} through yelp api`);
-        }
-      },
-      fail: function(errval) {
-        addErrorAlert('Something went wrong while trying to fetch from the yelp api');
-      }
+      dataType: 'jsonp'
     });
   }
 }
+
+/*
+,
+success: function(results) {
+  if(results["businesses"] && results["businesses"].length > 0){
+    let business = results.businesses[0];
+    $("#yelp_link").attr('href',business.url);
+    $("#yelp_rating").attr('src',business.rating_img_url);
+    $('#name').text(term);
+    $('#address').text(location);
+  } else {
+    addErrorAlert(`Unable to find business ${term} through yelp api`);
+  }
+},
+fail: function(errval) {
+  addErrorAlert('Something went wrong while trying to fetch from the yelp api');
+}
+*/

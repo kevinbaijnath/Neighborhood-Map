@@ -1,34 +1,27 @@
 export default function infoWindowTemplate(){
-  return `<div>
-  <div id="name"></div>
-  <div id="address"></div>
-  <a id="yelp_link" href=""><img id="yelp_rating" src=""></img></a>
-  <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-    <div class="carousel-inner" role="listbox">
-      <div class="carousel-item active">
-        <img id="carousel_0" class="d-block img-fluid" src="">
-      </div>
-      <div class="carousel-item">
-        <img id="carousel_1" class="d-block img-fluid" src="">
-      </div>
-      <div class="carousel-item">
-        <img id="carousel_2" class="d-block img-fluid" src="">
-      </div>
-      <div class="carousel-item">
-        <img id="carousel_3" class="d-block img-fluid" src="">
-      </div>
-      <div class="carousel-item">
-        <img id="carousel_4" class="d-block img-fluid" src="">
-      </div>
-    </div>
-    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="sr-only">Previous</span>
-    </a>
-    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="sr-only">Next</span>
-    </a>
-  </div>
-</div>`;
+  return;
+//   return (`
+//   <div data-bind="text: test"></div>
+//   <div data-bind="with: currentRestauraunt">
+//     hello
+//   <div data-bind="text: name"></div>
+//   <div data-bind="text: address"></div>
+//   <a data-bind="attr: { href: yelp_business.url }">
+//     <img data-bind="attr: { src: yelp_business.rating_img_url }" />
+//   </a>
+//   <div id="carouselControl" class="carousel slide" data-ride="carousel" data-bind="foreach: people">
+//       <div class="carousel-item active">
+//         <img class="d-block img-fluid" data-bind="attr: { src: $data }">
+//       </div>
+//     </div>
+//     <a class="carousel-control-prev" href="#carouselControl" role="button" data-slide="prev">
+//       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+//       <span class="sr-only">Previous</span>
+//     </a>
+//     <a class="carousel-control-next" href="#carouselControl" role="button" data-slide="next">
+//       <span class="carousel-control-next-icon" aria-hidden="true"></span>
+//       <span class="sr-only">Next</span>
+//     </a>
+//   </div>
+// </div>`);
 }
