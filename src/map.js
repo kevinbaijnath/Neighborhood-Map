@@ -23,22 +23,30 @@ function AppViewModel(){
   }));
 
   self.errors = ko.observableArray([]);
-  self.currentRestaurauntIndex = ko.observable();
-  self.currentRestauraunt = ko.computed(function() {
-    return self.restauraunts()[self.currentRestaurauntIndex()];
-  })
+  self.currentRestauraunt = ko.observable();
   self.filterText = ko.observable("");
 
   self.filteredRestaunts = ko.observableArray(self.restauraunts());
-  console.log(self.filteredRestaunts().map(function(item){ return item.name() }));
-  self.filterRestauraunts = function(form){
-    console.log(self.filteredRestaunts().map(function(item){ return item.name() }));
-    self.filteredRestaunts(self.restauraunts().filter(function(item){
-      console.log(`item name ${item.name()} - ${self.filterText()} - ${item.name().includes(self.filterText())}`)
-      return item.name().toLowerCase().includes(self.filterText().toLowerCase());
-    }));
+  self.filteredRestaunts.subscribe(function(newFilteredRestauraunts){
+    self.restauraunts().forEach(function(restauraunt){
+      if(newFilteredRestauraunts.includes(restauraunt)){
+        restauraunt.marker().setMap(map);
+      }else{
+        restauraunt.marker().setMap(null);
+      }
+    });
+  });
+
+  self.clickListItem = function(restauraunt){
+    self.currentRestauraunt(restauraunt);
   }
 
+  self.filterRestauraunts = function(form){
+    self.filteredRestaunts(self.restauraunts().filter(function(item){
+      return item.name().toLowerCase().includes(self.filterText().toLowerCase());
+    }));
+    //console.log(self.filteredRestaunts().map(function(item){ return item.name()}));
+  }
 
   self.currentRestauraunt.subscribe(function(nextRestauraunt){
     let marker = nextRestauraunt.marker();
@@ -130,7 +138,7 @@ function AppViewModel(){
     self.restauraunts()[index].marker(marker);
 
     google.maps.event.addListener(marker, 'click', function(){
-      self.currentRestaurauntIndex( );
+      self.currentRestauraunt(restauraunt);
     });
   }
 }

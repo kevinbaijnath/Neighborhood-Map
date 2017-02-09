@@ -10489,7 +10489,6 @@ var Yelp = function () {
     key: 'search',
     value: function search(term, location) {
       var url = this.base_url + '/search';
-      console.log('searching');
       return $.ajax({
         url: url,
         data: this.generateParams(url, term, location),
@@ -10501,25 +10500,6 @@ var Yelp = function () {
 
   return Yelp;
 }();
-
-/*
-,
-success: function(results) {
-  if(results["businesses"] && results["businesses"].length > 0){
-    let business = results.businesses[0];
-    $("#yelp_link").attr('href',business.url);
-    $("#yelp_rating").attr('src',business.rating_img_url);
-    $('#name').text(term);
-    $('#address').text(location);
-  } else {
-    addErrorAlert(`Unable to find business ${term} through yelp api`);
-  }
-},
-fail: function(errval) {
-  addErrorAlert('Something went wrong while trying to fetch from the yelp api');
-}
-*/
-
 
 exports.default = Yelp;
 
@@ -10583,7 +10563,7 @@ function animateMarker(marker) {
   marker.setAnimation(google.maps.Animation.BOUNCE);
   window.setTimeout(function () {
     marker.setAnimation(null);
-  }, 1500);
+  }, 1000);
 }
 
 /***/ }),
@@ -14664,24 +14644,29 @@ function AppViewModel() {
   }));
 
   self.errors = _knockout2.default.observableArray([]);
-  self.currentRestaurauntIndex = _knockout2.default.observable();
-  self.currentRestauraunt = _knockout2.default.computed(function () {
-    return self.restauraunts()[self.currentRestaurauntIndex()];
-  });
+  self.currentRestauraunt = _knockout2.default.observable();
   self.filterText = _knockout2.default.observable("");
 
   self.filteredRestaunts = _knockout2.default.observableArray(self.restauraunts());
-  console.log(self.filteredRestaunts().map(function (item) {
-    return item.name();
-  }));
+  self.filteredRestaunts.subscribe(function (newFilteredRestauraunts) {
+    self.restauraunts().forEach(function (restauraunt) {
+      if (newFilteredRestauraunts.includes(restauraunt)) {
+        restauraunt.marker().setMap(map);
+      } else {
+        restauraunt.marker().setMap(null);
+      }
+    });
+  });
+
+  self.clickListItem = function (restauraunt) {
+    self.currentRestauraunt(restauraunt);
+  };
+
   self.filterRestauraunts = function (form) {
-    console.log(self.filteredRestaunts().map(function (item) {
-      return item.name();
-    }));
     self.filteredRestaunts(self.restauraunts().filter(function (item) {
-      console.log('item name ' + item.name() + ' - ' + self.filterText() + ' - ' + item.name().includes(self.filterText()));
       return item.name().toLowerCase().includes(self.filterText().toLowerCase());
     }));
+    //console.log(self.filteredRestaunts().map(function(item){ return item.name()}));
   };
 
   self.currentRestauraunt.subscribe(function (nextRestauraunt) {
@@ -14772,7 +14757,7 @@ function AppViewModel() {
     self.restauraunts()[index].marker(marker);
 
     google.maps.event.addListener(marker, 'click', function () {
-      self.currentRestaurauntIndex();
+      self.currentRestauraunt(restauraunt);
     });
   };
 }

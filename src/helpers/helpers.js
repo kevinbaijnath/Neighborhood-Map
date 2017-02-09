@@ -13,5 +13,5 @@ export function animateMarker(marker){
   marker.setAnimation(google.maps.Animation.BOUNCE);
   window.setTimeout(function(){
     marker.setAnimation(null)
-  }, 1500);
+  }, 1000);
 }
