@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 50);
+/******/ 	return __webpack_require__(__webpack_require__.s = 49);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -3070,7 +3070,7 @@ var URI = (function () {
 if (!COMPILED && typeof module !== "undefined" && "function" === "function") {
     var punycode = __webpack_require__(12);
     module.exports = URI;
-    __webpack_require__(46);
+    __webpack_require__(45);
 }
 
 
@@ -10329,7 +10329,15 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+/** Class for interacting with Flickr API */
 var Flickr = function () {
+  /**
+   * Create a Flickr Object
+   * @constructor
+   * @param {Object} config - Configuration object that contains Flickr details
+   * @param {string} config.key - Flickr key
+   * @param {string} config.secret - Flickr secret
+  */
   function Flickr(config) {
     _classCallCheck(this, Flickr);
 
@@ -10337,11 +10345,30 @@ var Flickr = function () {
     this.secret = config.secret;
   }
 
+  /**
+   * Generate a Flickr URL
+   * @param {string} farm_id - id of the farm that has the photo
+   * @param {string} server_id - id of the server that has the photo
+   * @param {string} id - id of the photo
+   * @param {string} secret - secret associated with the photo
+   * @returns {string} url that has the flickr photo
+  */
+
+
   _createClass(Flickr, [{
     key: "buildFlickrPhotoURL",
     value: function buildFlickrPhotoURL(farm_id, server_id, id, secret) {
       return "https://farm" + farm_id + ".staticflickr.com/" + server_id + "/" + id + "_" + secret + "_n.jpg";
     }
+
+    /**
+     * Search for Flickr photos
+     * @param {number} lat - latitude to search
+     * @param {number} lon - longitude to search
+     * @param {string} search_term - search term to filter out photos to relevant photos
+     * @param {Object} - jquery promise with results
+    */
+
   }, {
     key: "searchPhotos",
     value: function searchPhotos(lat, lon, search_term) {
@@ -10355,12 +10382,13 @@ var Flickr = function () {
         lon: lon,
         per_page: 5,
         format: "json",
-        radius: 1
+        radius: 1,
+        nojsoncallback: 1
       };
-      $.ajax({
+      return $.ajax({
         url: url,
         data: params,
-        dataType: 'jsonp'
+        dataType: 'json'
       });
     }
   }]);
@@ -10381,8 +10409,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 var _knockout = __webpack_require__(9);
 
 var _knockout2 = _interopRequireDefault(_knockout);
@@ -10391,42 +10417,24 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Restauraunt = function () {
-  function Restauraunt(name, address) {
-    _classCallCheck(this, Restauraunt);
+/** Class representing a Restauraunt */
+var Restauraunt =
+/**
+ * Creates a new Restauraunt
+ * @constructor
+ * @param {string} name - Name of the Restauraunt
+ * @param {string} address - Address of the Restauraunt
+*/
+function Restauraunt(name, address) {
+  _classCallCheck(this, Restauraunt);
 
-    this.name = _knockout2.default.observable(name);
-    this.address = _knockout2.default.observable(address);
-    this.marker = _knockout2.default.observable();
-    this.yelp_url = _knockout2.default.observable();
-    this.yelp_img_url = _knockout2.default.observable();
-    this.flickr_images = _knockout2.default.observableArray();
-  }
-
-  _createClass(Restauraunt, [{
-    key: 'setMarker',
-    value: function setMarker(marker) {
-      this.marker(marker);
-    }
-  }, {
-    key: 'setYelpURL',
-    value: function setYelpURL(url) {
-      this.yelp_url(url);
-    }
-  }, {
-    key: 'setYelpImgURL',
-    value: function setYelpImgURL(url) {
-      this.yelp_img_url(url);
-    }
-  }, {
-    key: 'setFlickrImages',
-    value: function setFlickrImages(images) {
-      this.flickr_images(images);
-    }
-  }]);
-
-  return Restauraunt;
-}();
+  this.name = _knockout2.default.observable(name);
+  this.address = _knockout2.default.observable(address);
+  this.marker = _knockout2.default.observable();
+  this.yelp_url = _knockout2.default.observable();
+  this.yelp_img_url = _knockout2.default.observable();
+  this.flickr_images = _knockout2.default.observableArray();
+};
 
 exports.default = Restauraunt;
 
@@ -10443,7 +10451,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _oauthSignature = __webpack_require__(45);
+var _oauthSignature = __webpack_require__(44);
 
 var _oauthSignature2 = _interopRequireDefault(_oauthSignature);
 
@@ -10451,7 +10459,18 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+/** Class for interacting with Yelp API */
 var Yelp = function () {
+  /**
+   * Create a Yelp object
+   * @constructor
+   * @param {Object} config - Configuration object that contains Yelp API details
+   * @param {string} consumer_key - Yelp API consumer key
+   * @param {string} consumer_secret - Yelp API consumer secret
+   * @param {string} token - Yelp API token
+   * @param {string} token_secret - Yelp API token secret
+   * @param {string} base_url - url for yelp api
+  */
   function Yelp(config) {
     _classCallCheck(this, Yelp);
 
@@ -10462,11 +10481,26 @@ var Yelp = function () {
     this.base_url = config.base_url;
   }
 
+  /**
+   * Generate a nonce for oauth interaction with Yelp API
+   * @returns {string} - nonce
+  */
+
+
   _createClass(Yelp, [{
     key: 'generateNonce',
     value: function generateNonce() {
       return Math.floor(Math.random() * 1e12).toString();
     }
+
+    /**
+     * Generates query params for Yelp API search
+     * @param {string} url - url for api
+     * @param {string} term - search term
+     * @param {string} location - location to filter businesses to relevant results
+     * @returns {Object} - query params needed for interaction with Yelp API
+    */
+
   }, {
     key: 'generateParams',
     value: function generateParams(url, term, location) {
@@ -10485,6 +10519,14 @@ var Yelp = function () {
       params.oauth_signature = _oauthSignature2.default.generate('GET', url, params, this.consumer_secret, this.token_secret);
       return params;
     }
+
+    /**
+     * Search for businesses using Yelp API
+     * @param {string} - search term
+     * @param {string} - location to obtain only relevant results
+     * @returns {Object} - jquery promise with results
+    */
+
   }, {
     key: 'search',
     value: function search(term, location) {
@@ -10513,52 +10555,10 @@ exports.default = Yelp;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = infoWindowTemplate;
-function infoWindowTemplate() {
-  return;
-  //   return (`
-  //   <div data-bind="text: test"></div>
-  //   <div data-bind="with: currentRestauraunt">
-  //     hello
-  //   <div data-bind="text: name"></div>
-  //   <div data-bind="text: address"></div>
-  //   <a data-bind="attr: { href: yelp_business.url }">
-  //     <img data-bind="attr: { src: yelp_business.rating_img_url }" />
-  //   </a>
-  //   <div id="carouselControl" class="carousel slide" data-ride="carousel" data-bind="foreach: people">
-  //       <div class="carousel-item active">
-  //         <img class="d-block img-fluid" data-bind="attr: { src: $data }">
-  //       </div>
-  //     </div>
-  //     <a class="carousel-control-prev" href="#carouselControl" role="button" data-slide="prev">
-  //       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-  //       <span class="sr-only">Previous</span>
-  //     </a>
-  //     <a class="carousel-control-next" href="#carouselControl" role="button" data-slide="next">
-  //       <span class="carousel-control-next-icon" aria-hidden="true"></span>
-  //       <span class="sr-only">Next</span>
-  //     </a>
-  //   </div>
-  // </div>`);
-}
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.addErrorAlert = addErrorAlert;
-exports.animateMarker = animateMarker;
-function addErrorAlert(text) {
-  var newAlert = $("\n  <div class=\"alert alert-danger alert-dismissible fade show\" role=\"alert\">\n    <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n      <span aria-hidden=\"true\">&times;</span>\n    </button>\n    <strong>Uh oh!</strong> " + text + "\n  </div>");
-  $("#alert").append(newAlert);
-}
-
+/**
+ * Animates a google marker
+ * @param {Object} - google maps marker
+*/
 function animateMarker(marker) {
   marker.setAnimation(google.maps.Animation.BOUNCE);
   window.setTimeout(function () {
@@ -10566,8 +10566,10 @@ function animateMarker(marker) {
   }, 1000);
 }
 
+exports.animateMarker = animateMarker;
+
 /***/ }),
-/* 18 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10591,7 +10593,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 19 */
+/* 18 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -10600,7 +10602,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -10612,7 +10614,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -10849,7 +10851,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory) {
@@ -11003,7 +11005,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -11074,13 +11076,13 @@ module.exports = {
 }));
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(0), __webpack_require__(5), __webpack_require__(25), __webpack_require__(22), __webpack_require__(2), __webpack_require__(4), __webpack_require__(8), __webpack_require__(10), __webpack_require__(41), __webpack_require__(11), __webpack_require__(43), __webpack_require__(42), __webpack_require__(40), __webpack_require__(7), __webpack_require__(36), __webpack_require__(3), __webpack_require__(1), __webpack_require__(26), __webpack_require__(28), __webpack_require__(27), __webpack_require__(30), __webpack_require__(29), __webpack_require__(31), __webpack_require__(32), __webpack_require__(33), __webpack_require__(35), __webpack_require__(34), __webpack_require__(23), __webpack_require__(21), __webpack_require__(44), __webpack_require__(39), __webpack_require__(38), __webpack_require__(37));
+		module.exports = exports = factory(__webpack_require__(0), __webpack_require__(5), __webpack_require__(24), __webpack_require__(21), __webpack_require__(2), __webpack_require__(4), __webpack_require__(8), __webpack_require__(10), __webpack_require__(40), __webpack_require__(11), __webpack_require__(42), __webpack_require__(41), __webpack_require__(39), __webpack_require__(7), __webpack_require__(35), __webpack_require__(3), __webpack_require__(1), __webpack_require__(25), __webpack_require__(27), __webpack_require__(26), __webpack_require__(29), __webpack_require__(28), __webpack_require__(30), __webpack_require__(31), __webpack_require__(32), __webpack_require__(34), __webpack_require__(33), __webpack_require__(22), __webpack_require__(20), __webpack_require__(43), __webpack_require__(38), __webpack_require__(37), __webpack_require__(36));
 	}
 	else if (typeof define === "function" && define.amd) {
 		// AMD
@@ -11097,7 +11099,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory) {
@@ -11178,7 +11180,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -11261,7 +11263,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -11382,7 +11384,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -11445,7 +11447,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -11490,7 +11492,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -11549,7 +11551,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -11603,7 +11605,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -11652,7 +11654,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -11697,7 +11699,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -11732,7 +11734,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -11782,7 +11784,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -11932,7 +11934,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 37 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -12127,7 +12129,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 38 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -12324,7 +12326,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 39 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -12468,7 +12470,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 40 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory) {
@@ -12740,7 +12742,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 41 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -12825,7 +12827,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 42 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -13153,7 +13155,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 43 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -13241,7 +13243,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 44 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -14016,7 +14018,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 45 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function() {
@@ -14270,7 +14272,7 @@ module.exports = {
 
 	function HmacSha1(text, key) {
 		// load CryptoJs in the browser or in node
-		this._cryptoJS = isNode ? __webpack_require__(24) : CryptoJS;
+		this._cryptoJS = isNode ? __webpack_require__(23) : CryptoJS;
 		this._text = text || '';
 		this._key = key || '';
 		this._hash = this._cryptoJS.HmacSHA1(this._text, this._key);
@@ -14302,17 +14304,17 @@ module.exports = {
 
 
 /***/ }),
-/* 46 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ///<reference path="commonjs.d.ts"/>
-__webpack_require__(47);
-__webpack_require__(49);
+__webpack_require__(46);
 __webpack_require__(48);
+__webpack_require__(47);
 
 
 /***/ }),
-/* 47 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ///<reference path="../uri.ts"/>
@@ -14345,7 +14347,7 @@ URI.SCHEMES["http"] = URI.SCHEMES["https"] = {
 
 
 /***/ }),
-/* 48 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ///<reference path="../uri.ts"/>
@@ -14508,7 +14510,7 @@ if (typeof COMPILED === "undefined" && typeof URI === "undefined" && "function" 
 
 
 /***/ }),
-/* 49 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ///<reference path="../uri.ts"/>
@@ -14587,25 +14589,21 @@ if (typeof COMPILED === "undefined" && typeof URI === "undefined" && "function" 
 
 
 /***/ }),
-/* 50 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _flickr = __webpack_require__(19);
+var _flickr = __webpack_require__(18);
 
 var _flickr2 = _interopRequireDefault(_flickr);
 
-var _yelp = __webpack_require__(20);
+var _yelp = __webpack_require__(19);
 
 var _yelp2 = _interopRequireDefault(_yelp);
 
-var _infoWindowTemplate = __webpack_require__(16);
-
-var _infoWindowTemplate2 = _interopRequireDefault(_infoWindowTemplate);
-
-var _model = __webpack_require__(18);
+var _model = __webpack_require__(17);
 
 var _model2 = _interopRequireDefault(_model);
 
@@ -14621,7 +14619,7 @@ var _Flickr = __webpack_require__(13);
 
 var _Flickr2 = _interopRequireDefault(_Flickr);
 
-var _helpers = __webpack_require__(17);
+var _helpers = __webpack_require__(16);
 
 var _knockout = __webpack_require__(9);
 
@@ -14644,6 +14642,7 @@ function AppViewModel() {
   }));
 
   self.errors = _knockout2.default.observableArray([]);
+
   self.currentRestauraunt = _knockout2.default.observable();
   self.filterText = _knockout2.default.observable("");
 
@@ -14684,65 +14683,45 @@ function AppViewModel() {
     }
 
     if (nextRestauraunt.flickr_images().length == 0) {
-      flickr.searchPhotos(location.lat(), location.lng(), nextRestauraunt.name());
+      flickr.searchPhotos(location.lat(), location.lng(), nextRestauraunt.name()).then(function (results) {
+        if (!results["stat"] || results["stat"] != "ok") {
+          self.errors.push('Something went wrong while trying to fetch flickr photos');
+          return;
+        }
+
+        var flickrImages = results["photos"]["photo"].map(function (photo) {
+          return flickr.buildFlickrPhotoURL(photo.farm, photo.server, photo.id, photo.secret);
+        });
+
+        self.currentRestauraunt().flickr_images(flickrImages);
+      }).fail(function (error) {
+        self.errors.push('Something went wrong while trying to fetch flickr photos');
+      });
     }
 
     // animate the marker whenever it is clicked on the map
     (0, _helpers.animateMarker)(marker);
-    //infoWindow.setContent($('#infoWindow').html());
     infoWindow.open(map, marker);
   });
 
   self.jsonFlickrApi = function (results) {
-    if (!results["stat"] || results["stat"] != "ok") {
-      self.errors.push('Something went wrong while trying to fetch flickr photos');
-      return;
-    }
-
-    var flickrImages = results["photos"]["photo"].map(function (photo) {
-      return flickr.buildFlickrPhotoURL(photo.farm, photo.server, photo.id, photo.secret);
-    });
-
-    self.currentRestauraunt().flickr_images(flickrImages);
-  };
-
-  self.initMap = function () {
-    map = new google.maps.Map(document.getElementById("map"), {
-      zoom: 14,
-      center: _model2.default.starting_point
-    });
-    infoWindow = new google.maps.InfoWindow({
-      content: infoWindowNode[0]
-    });
-
-    google.maps.event.addListener(infoWindow, "closeclick", function () {
-      //console.log('closing_window');
-      $("body").append(infoWindowNode);
-    });
-
-    service = new google.maps.places.PlacesService(map);
-    self.initApp();
+    console.log(results["stat"]);
   };
 
   self.initApp = function () {
-    if (!self.service) {
-      // do something with an error here
-    }
-
     self.restauraunts().forEach(function (restauraunt, index) {
       var request = {
         location: _model2.default.starting_point,
         radius: 15000,
         keyword: restauraunt.address()
       };
-      //console.log(request);
       service.nearbySearch(request, self.serviceCallback.bind(null, restauraunt, index));
     });
   };
 
   self.serviceCallback = function callback(restauraunt, index, results, status) {
     if (status != google.maps.places.PlacesServiceStatus.OK) {
-      self.errors.push('Something went wrong while trying to fetch details about ' + restauraunt.name + ' from Google Maps API');
+      self.errors.push('Something went wrong while trying to fetch restauraunt details from Google Maps API');
       return;
     }
     var marker = new google.maps.Marker({
@@ -14760,13 +14739,30 @@ function AppViewModel() {
       self.currentRestauraunt(restauraunt);
     });
   };
+
+  self.mapError = function () {
+    self.errors.push('Error loading google maps');
+  };
 }
 
 var vm = new AppViewModel();
 
+function initMap() {
+  map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 14,
+    center: _model2.default.starting_point
+  });
+  infoWindow = new google.maps.InfoWindow({
+    content: infoWindowNode[0]
+  });
+
+  service = new google.maps.places.PlacesService(map);
+  vm.initApp();
+}
+
 // Need to add callbacks to window since es6 functions are not global
-window.initMap = vm.initMap;
-window.jsonFlickrApi = vm.jsonFlickrApi;
+window.initMap = initMap;
+window.mapError = vm.mapError;
 
 _knockout2.default.applyBindings(vm);
 
