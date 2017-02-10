@@ -39,4 +39,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE) f
 * The team at Udacity
 * The Udacity Forums
 * Stack Overflow
-* [Stack Overflow question for google maps info window](https://nodejs.org/en/)
+* [Stack Overflow question for google maps info window](http://stackoverflow.com/questions/15317796/knockout-loses-bindings-when-google-maps-api-v3-info-window-is-closed/25274909)
