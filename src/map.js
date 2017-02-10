@@ -20,7 +20,7 @@ let infoWindow = null;
 /**
  * View Model for the application
 */
-function appViewModel(){
+function AppViewModel(){
   let self = this;
 
   // state variables
@@ -34,9 +34,9 @@ function appViewModel(){
   self.filteredRestaunts.subscribe(function(newFilteredRestauraunts){
     self.restauraunts().forEach(function(restauraunt){
       if(newFilteredRestauraunts.includes(restauraunt)){
-        restauraunt.marker().setMap(map);
+        restauraunt.marker().setMap(true);
       }else{
-        restauraunt.marker().setMap(null);
+        restauraunt.marker().setMap(false);
       }
     });
   });
@@ -151,7 +151,7 @@ function appViewModel(){
   }
 }
 
-let vm = new appViewModel();
+let vm = new AppViewModel();
 
 /*
  * Callback function that gets invoked when google maps is initialized
