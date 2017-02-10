@@ -10356,9 +10356,16 @@ var Flickr = function () {
 
 
   _createClass(Flickr, [{
-    key: "buildFlickrPhotoURL",
-    value: function buildFlickrPhotoURL(farm_id, server_id, id, secret) {
-      return "https://farm" + farm_id + ".staticflickr.com/" + server_id + "/" + id + "_" + secret + "_n.jpg";
+    key: 'buildFlickrPhotoURL',
+    value: function buildFlickrPhotoURL(farm_id, server_id, id, secret, size) {
+      switch (size) {
+        case 'thumbnail':
+          return 'https://farm' + farm_id + '.staticflickr.com/' + server_id + '/' + id + '_' + secret + '_t.jpg';
+        case 'small':
+          return 'https://farm' + farm_id + '.staticflickr.com/' + server_id + '/' + id + '_' + secret + '_n.jpg';
+        default:
+          return 'https://farm' + farm_id + '.staticflickr.com/' + server_id + '/' + id + '_' + secret + '_z.jpg';
+      }
     }
 
     /**
@@ -10370,18 +10377,18 @@ var Flickr = function () {
     */
 
   }, {
-    key: "searchPhotos",
+    key: 'searchPhotos',
     value: function searchPhotos(lat, lon, search_term) {
       var url = 'https://api.flickr.com/services/rest';
       var params = {
-        method: "flickr.photos.search",
+        method: 'flickr.photos.search',
         text: search_term,
         api_key: this.key,
-        privacy_filter: "1",
+        privacy_filter: '1',
         lat: lat,
         lon: lon,
         per_page: 5,
-        format: "json",
+        format: 'json',
         radius: 1,
         nojsoncallback: 1
       };
@@ -10459,7 +10466,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var VALUES = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+
 /** Class for interacting with Yelp API */
+
 var Yelp = function () {
   /**
    * Create a Yelp object
@@ -10490,7 +10500,11 @@ var Yelp = function () {
   _createClass(Yelp, [{
     key: 'generateNonce',
     value: function generateNonce() {
-      return Math.floor(Math.random() * 1e12).toString();
+      var nonce = '';
+      for (var i = 0; i < 12; i++) {
+        nonce += VALUES.charAt(Math.floor(Math.random() * VALUES.length));
+      }
+      return nonce;
     }
 
     /**
@@ -10514,7 +10528,7 @@ var Yelp = function () {
         callback: 'cb',
         location: location,
         term: term,
-        limit: "1"
+        limit: '1'
       };
       params.oauth_signature = _oauthSignature2.default.generate('GET', url, params, this.consumer_secret, this.token_secret);
       return params;
@@ -10579,16 +10593,34 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = {
-  "starting_point": {
+  'starting_point': {
     lat: 47.6126416,
     lng: -122.341657
   },
-  "restauraunts": [{
-    name: "Pike Place Chowder",
-    address: "Pike Place Market, 1530 Post Alley, Seattle, WA 98101"
+  'restauraunts': [{
+    name: 'Pike Place Chowder',
+    address: 'Pike Place Market, 1530 Post Alley, Seattle, WA 98101'
   }, {
-    name: "Japonessa",
-    address: "1400 1st Ave Seattle, WA 98101"
+    name: 'Japonessa',
+    address: '1400 1st Ave Seattle, WA 98101'
+  }, {
+    name: 'Toulouse Petit',
+    address: '601 Queen Anne Ave N  Seattle, WA 98109'
+  }, {
+    name: 'Umi Sake House',
+    address: '2230 1st Ave Seattle, WA 98121'
+  }, {
+    name: 'Serious Pie & Biscuit',
+    address: '401 Westlake Ave N Seattle, WA 98109'
+  }, {
+    name: 'Dahlia Lounge',
+    address: '2001 4th Ave Seattle, WA 98121'
+  }, {
+    name: 'Mike’s Noodle House',
+    address: '418 Maynard Ave S Seattle, WA 98104'
+  }, {
+    name: 'Tavolata ',
+    address: '2323 2nd Ave Seattle, WA 98121'
   }]
 };
 
@@ -14607,17 +14639,17 @@ var _model = __webpack_require__(17);
 
 var _model2 = _interopRequireDefault(_model);
 
-var _Restauraunt = __webpack_require__(14);
+var _restauraunt = __webpack_require__(14);
 
-var _Restauraunt2 = _interopRequireDefault(_Restauraunt);
+var _restauraunt2 = _interopRequireDefault(_restauraunt);
 
-var _Yelp = __webpack_require__(15);
+var _yelp3 = __webpack_require__(15);
 
-var _Yelp2 = _interopRequireDefault(_Yelp);
+var _yelp4 = _interopRequireDefault(_yelp3);
 
-var _Flickr = __webpack_require__(13);
+var _flickr3 = __webpack_require__(13);
 
-var _Flickr2 = _interopRequireDefault(_Flickr);
+var _flickr4 = _interopRequireDefault(_flickr3);
 
 var _helpers = __webpack_require__(16);
 
@@ -14627,25 +14659,29 @@ var _knockout2 = _interopRequireDefault(_knockout);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var yelp = new _Yelp2.default(_yelp2.default);
-var flickr = new _Flickr2.default(_flickr2.default);
+//constants
+var YELP = new _yelp4.default(_yelp2.default);
+var FLICKR = new _flickr4.default(_flickr2.default);
+var INFO_WINDOW_NODE = $('#infoWindow');
+
+// Google Maps Variables
 var map = null;
 var service = null;
 var infoWindow = null;
-var infoWindowNode = $("#infoWindow");
 
-function AppViewModel() {
+/**
+ * View Model for the application
+*/
+function appViewModel() {
   var self = this;
 
+  // state variables
   self.restauraunts = _knockout2.default.observableArray(_model2.default.restauraunts.map(function (restauraunt) {
-    return new _Restauraunt2.default(restauraunt.name, restauraunt.address);
+    return new _restauraunt2.default(restauraunt.name, restauraunt.address);
   }));
-
   self.errors = _knockout2.default.observableArray([]);
-
   self.currentRestauraunt = _knockout2.default.observable();
-  self.filterText = _knockout2.default.observable("");
-
+  self.filterText = _knockout2.default.observable('');
   self.filteredRestaunts = _knockout2.default.observableArray(self.restauraunts());
   self.filteredRestaunts.subscribe(function (newFilteredRestauraunts) {
     self.restauraunts().forEach(function (restauraunt) {
@@ -14657,23 +14693,32 @@ function AppViewModel() {
     });
   });
 
+  /*
+   * Sets currentRestauraunt to the restauraunt that was clicked
+  */
   self.clickListItem = function (restauraunt) {
     self.currentRestauraunt(restauraunt);
   };
 
+  /*
+   * Filters the restauraunts based on the filter text
+  */
   self.filterRestauraunts = function (form) {
     self.filteredRestaunts(self.restauraunts().filter(function (item) {
       return item.name().toLowerCase().includes(self.filterText().toLowerCase());
     }));
-    //console.log(self.filteredRestaunts().map(function(item){ return item.name()}));
   };
 
+  /*
+   * Populates the current restauraunt with yelp and flickr informatio and opens
+   * the infoWindow for the corresponding marker
+  */
   self.currentRestauraunt.subscribe(function (nextRestauraunt) {
     var marker = nextRestauraunt.marker();
     var location = marker.place.location;
     if (!nextRestauraunt.yelp_url()) {
-      yelp.search(nextRestauraunt.name(), nextRestauraunt.address()).done(function (results) {
-        if (results["businesses"] && results["businesses"].length > 0) {
+      YELP.search(nextRestauraunt.name(), nextRestauraunt.address()).done(function (results) {
+        if (results['businesses'] && results['businesses'].length > 0) {
           nextRestauraunt.yelp_url(results.businesses[0].url);
           nextRestauraunt.yelp_img_url(results.businesses[0].rating_img_url);
         }
@@ -14683,18 +14728,22 @@ function AppViewModel() {
     }
 
     if (nextRestauraunt.flickr_images().length == 0) {
-      flickr.searchPhotos(location.lat(), location.lng(), nextRestauraunt.name()).then(function (results) {
-        if (!results["stat"] || results["stat"] != "ok") {
+      FLICKR.searchPhotos(location.lat(), location.lng(), nextRestauraunt.name()).then(function (results) {
+        if (!results['stat'] || results['stat'] != 'ok') {
           self.errors.push('Something went wrong while trying to fetch flickr photos');
           return;
         }
 
-        var flickrImages = results["photos"]["photo"].map(function (photo) {
-          return flickr.buildFlickrPhotoURL(photo.farm, photo.server, photo.id, photo.secret);
+        var flickrImages = results['photos']['photo'].map(function (photo) {
+          return {
+            small: FLICKR.buildFlickrPhotoURL(photo.farm, photo.server, photo.id, photo.secret, 'small'),
+            thumbnail: FLICKR.buildFlickrPhotoURL(photo.farm, photo.server, photo.id, photo.secret, 'thumbnail')
+          };
         });
 
         self.currentRestauraunt().flickr_images(flickrImages);
       }).fail(function (error) {
+        console.log(error);
         self.errors.push('Something went wrong while trying to fetch flickr photos');
       });
     }
@@ -14704,10 +14753,9 @@ function AppViewModel() {
     infoWindow.open(map, marker);
   });
 
-  self.jsonFlickrApi = function (results) {
-    console.log(results["stat"]);
-  };
-
+  /*
+   * Populates the application with initial data from the model
+  */
   self.initApp = function () {
     self.restauraunts().forEach(function (restauraunt, index) {
       var request = {
@@ -14719,6 +14767,9 @@ function AppViewModel() {
     });
   };
 
+  /*
+   * Creates and adds a marker to each restauraunt
+  */
   self.serviceCallback = function callback(restauraunt, index, results, status) {
     if (status != google.maps.places.PlacesServiceStatus.OK) {
       self.errors.push('Something went wrong while trying to fetch restauraunt details from Google Maps API');
@@ -14740,20 +14791,26 @@ function AppViewModel() {
     });
   };
 
+  /**
+   * Function that gets run when there is an error with google maps
+  */
   self.mapError = function () {
     self.errors.push('Error loading google maps');
   };
 }
 
-var vm = new AppViewModel();
+var vm = new appViewModel();
 
+/*
+ * Callback function that gets invoked when google maps is initialized
+*/
 function initMap() {
-  map = new google.maps.Map(document.getElementById("map"), {
+  map = new google.maps.Map(document.getElementById('map'), {
     zoom: 14,
     center: _model2.default.starting_point
   });
   infoWindow = new google.maps.InfoWindow({
-    content: infoWindowNode[0]
+    content: INFO_WINDOW_NODE[0]
   });
 
   service = new google.maps.places.PlacesService(map);

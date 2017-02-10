@@ -20,8 +20,15 @@ class Flickr {
    * @param {string} secret - secret associated with the photo
    * @returns {string} url that has the flickr photo
   */
-  buildFlickrPhotoURL(farm_id, server_id, id, secret){
-    return `https://farm${farm_id}.staticflickr.com/${server_id}/${id}_${secret}_n.jpg`;
+  buildFlickrPhotoURL(farm_id, server_id, id, secret, size){
+    switch(size){
+      case 'thumbnail':
+        return `https://farm${farm_id}.staticflickr.com/${server_id}/${id}_${secret}_t.jpg`;
+      case 'small':
+        return `https://farm${farm_id}.staticflickr.com/${server_id}/${id}_${secret}_n.jpg`;
+      default:
+        return `https://farm${farm_id}.staticflickr.com/${server_id}/${id}_${secret}_z.jpg`;
+    }
   }
 
   /**
@@ -34,14 +41,14 @@ class Flickr {
   searchPhotos(lat, lon, search_term){
     let url = 'https://api.flickr.com/services/rest';
     let params = {
-      method: "flickr.photos.search",
+      method: 'flickr.photos.search',
       text: search_term,
       api_key: this.key,
-      privacy_filter: "1",
+      privacy_filter: '1',
       lat: lat,
       lon: lon,
       per_page: 5,
-      format: "json",
+      format: 'json',
       radius: 1,
       nojsoncallback: 1
     }

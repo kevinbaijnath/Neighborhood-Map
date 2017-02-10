@@ -1,4 +1,5 @@
 import oauthSignature from 'oauth-signature';
+const VALUES = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
 /** Class for interacting with Yelp API */
 class Yelp {
@@ -25,7 +26,11 @@ class Yelp {
    * @returns {string} - nonce
   */
   generateNonce() {
-    return (Math.floor(Math.random() * 1e12).toString());
+    let nonce = '';
+    for (let i = 0; i < 12; i++) {
+      nonce += VALUES.charAt(Math.floor(Math.random() * VALUES.length));
+    }
+    return nonce;
   }
 
   /**
@@ -46,7 +51,7 @@ class Yelp {
       callback: 'cb',
       location: location,
       term: term,
-      limit: "1"
+      limit: '1'
     }
     params.oauth_signature = oauthSignature.generate('GET',url, params, this.consumer_secret, this.token_secret);
     return params;

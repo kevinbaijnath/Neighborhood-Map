@@ -1,33 +1,35 @@
 import FLICKR_CONFIG from './config/flickr.json';
 import YELP_CONFIG from './config/yelp.json';
 import Model from './model';
-import Restauraunt from './classes/Restauraunt';
-import Yelp from './classes/Yelp';
-import Flickr from './classes/Flickr';
+import Restauraunt from './classes/restauraunt';
+import Yelp from './classes/yelp';
+import Flickr from './classes/flickr';
 import {animateMarker} from './helpers/helpers';
 import ko from 'knockout';
 
-const yelp = new Yelp(YELP_CONFIG);
-const flickr = new Flickr(FLICKR_CONFIG);
+//constants
+const YELP = new Yelp(YELP_CONFIG);
+const FLICKR = new Flickr(FLICKR_CONFIG);
+const INFO_WINDOW_NODE = $('#infoWindow');
 
 // Google Maps Variables
 let map = null;
 let service = null;
 let infoWindow = null;
-const infoWindowNode = $("#infoWindow");
 
-function AppViewModel(){
+/**
+ * View Model for the application
+*/
+function appViewModel(){
   let self = this;
 
+  // state variables
   self.restauraunts = ko.observableArray(Model.restauraunts.map((restauraunt) => {
     return new Restauraunt(restauraunt.name, restauraunt.address);
   }));
-
   self.errors = ko.observableArray([]);
-
   self.currentRestauraunt = ko.observable();
-  self.filterText = ko.observable("");
-
+  self.filterText = ko.observable('');
   self.filteredRestaunts = ko.observableArray(self.restauraunts());
   self.filteredRestaunts.subscribe(function(newFilteredRestauraunts){
     self.restauraunts().forEach(function(restauraunt){
@@ -39,24 +41,33 @@ function AppViewModel(){
     });
   });
 
+  /*
+   * Sets currentRestauraunt to the restauraunt that was clicked
+  */
   self.clickListItem = function(restauraunt){
     self.currentRestauraunt(restauraunt);
   }
 
+  /*
+   * Filters the restauraunts based on the filter text
+  */
   self.filterRestauraunts = function(form){
     self.filteredRestaunts(self.restauraunts().filter(function(item){
       return item.name().toLowerCase().includes(self.filterText().toLowerCase());
     }));
-    //console.log(self.filteredRestaunts().map(function(item){ return item.name()}));
   }
 
+  /*
+   * Populates the current restauraunt with yelp and flickr informatio and opens
+   * the infoWindow for the corresponding marker
+  */
   self.currentRestauraunt.subscribe(function(nextRestauraunt){
     let marker = nextRestauraunt.marker();
     let location = marker.place.location;
     if(!nextRestauraunt.yelp_url()){
-      yelp.search(nextRestauraunt.name(), nextRestauraunt.address())
+      YELP.search(nextRestauraunt.name(), nextRestauraunt.address())
       .done(function(results){
-        if(results["businesses"] && results["businesses"].length > 0){
+        if(results['businesses'] && results['businesses'].length > 0){
           nextRestauraunt.yelp_url(results.businesses[0].url);
           nextRestauraunt.yelp_img_url(results.businesses[0].rating_img_url);
         }
@@ -67,20 +78,24 @@ function AppViewModel(){
     }
 
     if(nextRestauraunt.flickr_images().length == 0){
-        flickr.searchPhotos(location.lat(), location.lng(), nextRestauraunt.name())
+        FLICKR.searchPhotos(location.lat(), location.lng(), nextRestauraunt.name())
         .then(function(results){
-          if(!results["stat"] || results["stat"] != "ok"){
+          if(!results['stat'] || results['stat'] != 'ok'){
             self.errors.push('Something went wrong while trying to fetch flickr photos');
             return;
           }
 
-          let flickrImages = results["photos"]["photo"].map(function(photo){
-            return flickr.buildFlickrPhotoURL(photo.farm, photo.server, photo.id, photo.secret);
+          let flickrImages = results['photos']['photo'].map(function(photo){
+            return {
+              small: FLICKR.buildFlickrPhotoURL(photo.farm, photo.server, photo.id, photo.secret, 'small'),
+              thumbnail: FLICKR.buildFlickrPhotoURL(photo.farm, photo.server, photo.id, photo.secret, 'thumbnail')
+            }
           });
 
           self.currentRestauraunt().flickr_images(flickrImages);
         })
         .fail(function(error){
+          console.log(error);
           self.errors.push('Something went wrong while trying to fetch flickr photos');
         })
     }
@@ -90,11 +105,9 @@ function AppViewModel(){
     infoWindow.open(map, marker);
   })
 
-  self.jsonFlickrApi = function(results){
-    console.log(results["stat"]);
-
-  }
-
+  /*
+   * Populates the application with initial data from the model
+  */
   self.initApp = function(){
     self.restauraunts().forEach(function(restauraunt,index){
       let request = {
@@ -106,6 +119,9 @@ function AppViewModel(){
     });
   }
 
+  /*
+   * Creates and adds a marker to each restauraunt
+  */
   self.serviceCallback = function callback(restauraunt, index, results, status){
     if (status != google.maps.places.PlacesServiceStatus.OK){
       self.errors.push(`Something went wrong while trying to fetch restauraunt details from Google Maps API`);
@@ -127,20 +143,26 @@ function AppViewModel(){
     });
   }
 
+  /**
+   * Function that gets run when there is an error with google maps
+  */
   self.mapError = function(){
     self.errors.push('Error loading google maps');
   }
 }
 
-let vm = new AppViewModel();
+let vm = new appViewModel();
 
+/*
+ * Callback function that gets invoked when google maps is initialized
+*/
 function initMap(){
-  map = (new google.maps.Map(document.getElementById("map"), {
+  map = (new google.maps.Map(document.getElementById('map'), {
       zoom:14,
       center: Model.starting_point
   }));
   infoWindow = (new google.maps.InfoWindow({
-      content: infoWindowNode[0]
+      content: INFO_WINDOW_NODE[0]
   }));
 
   service = (new google.maps.places.PlacesService(map));

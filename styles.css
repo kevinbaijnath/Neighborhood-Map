@@ -7,6 +7,7 @@
   padding-top:10px;
   padding-left: 0;
   padding-right: 0;
+  overflow-y: auto;
 }
 
 
@@ -44,4 +45,17 @@ html, body, .container-fluid, .row, #map {
 .form-inline, .list-group {
   margin-left: 5px;
   margin-right: 5px;
+}
+
+@media screen and (max-width:480px) {
+    .info-window {
+      width: 90px;
+    }
+    .sidebar {
+      height: 30%;
+      position: relative;
+    }
+    .map-modify {
+      height: 70%;
+    }
 }
