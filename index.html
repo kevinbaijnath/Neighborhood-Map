@@ -15,11 +15,8 @@
     <div class="container-fluid remove-padding">
         <div class="row remove-margin">
             <nav class="col-12 col-sm-2 sidebar bg-inverse">
-                <form class="form-inline mt-2 mt-md-0" data-bind="submit: filterRestauraunts">
-                    <input class="form-control mr-sm-2" type="text" placeholder="Filter Text" name="filter" data-bind="textInput: filterText">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Filter</button>
-                </form>
-                <ul class="list-group" data-bind="foreach: filteredRestaunts">
+                <input class="form-control mr-sm-2" type="text" placeholder="Filter Text" data-bind="textInput: filterText">
+                <ul class="list-group" data-bind="foreach: filteredRestaurants">
                     <li class="list-group-item" data-bind="text: name,click: $parent.clickListItem"></li>
                 </ul>
             </nav>
@@ -38,7 +35,7 @@
     </div>
 
     <div id="infoWindow" class="info-window">
-        <div data-bind="with: currentRestauraunt">
+        <div data-bind="with: currentRestaurant">
             <div data-bind="text: name" class="infowindow-title"></div>
             <div data-bind="text: address"></div>
             <a data-bind="attr: { href: yelp_url }">

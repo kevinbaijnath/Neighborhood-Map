@@ -1,7 +1,7 @@
 import FLICKR_CONFIG from './config/flickr.json';
 import YELP_CONFIG from './config/yelp.json';
 import Model from './model';
-import Restauraunt from './classes/restauraunt';
+import Restaurant from './classes/restaurant';
 import Yelp from './classes/yelp';
 import Flickr from './classes/flickr';
 import {animateMarker} from './helpers/helpers';
@@ -24,52 +24,43 @@ function AppViewModel(){
   let self = this;
 
   // state variables
-  self.restauraunts = ko.observableArray(Model.restauraunts.map((restauraunt) => {
-    return new Restauraunt(restauraunt.name, restauraunt.address);
+  self.restaurants = ko.observableArray(Model.restaurants.map((restaurant) => {
+    return new Restaurant(restaurant.name, restaurant.address);
   }));
   self.errors = ko.observableArray([]);
-  self.currentRestauraunt = ko.observable();
+  self.currentRestaurant = ko.observable();
   self.filterText = ko.observable('');
-  self.filteredRestaunts = ko.observableArray(self.restauraunts());
-  self.filteredRestaunts.subscribe(function(newFilteredRestauraunts){
-    self.restauraunts().forEach(function(restauraunt){
-      if(newFilteredRestauraunts.includes(restauraunt)){
-        restauraunt.marker().setMap(true);
-      }else{
-        restauraunt.marker().setMap(false);
-      }
+  self.filteredRestaurants = ko.computed(function(){
+    return self.restaurants().filter(function(item){
+      return item.name().toLowerCase().includes(self.filterText().toLowerCase());
+    });
+  }, self);
+  self.filteredRestaurants.subscribe(function(newFilteredRestaurants){
+    self.restaurants().forEach(function(restaurant){
+      restaurant.marker().setVisible(newFilteredRestaurants.includes(restaurant));
     });
   });
 
   /*
-   * Sets currentRestauraunt to the restauraunt that was clicked
+   * Sets currentRestaurant to the restaurant that was clicked
   */
-  self.clickListItem = function(restauraunt){
-    self.currentRestauraunt(restauraunt);
+  self.clickListItem = function(restaurant){
+    self.currentRestaurant(restaurant);
   }
 
   /*
-   * Filters the restauraunts based on the filter text
-  */
-  self.filterRestauraunts = function(form){
-    self.filteredRestaunts(self.restauraunts().filter(function(item){
-      return item.name().toLowerCase().includes(self.filterText().toLowerCase());
-    }));
-  }
-
-  /*
-   * Populates the current restauraunt with yelp and flickr informatio and opens
+   * Populates the current restaurant with yelp and flickr informatio and opens
    * the infoWindow for the corresponding marker
   */
-  self.currentRestauraunt.subscribe(function(nextRestauraunt){
-    let marker = nextRestauraunt.marker();
+  self.currentRestaurant.subscribe(function(nextRestaurant){
+    let marker = nextRestaurant.marker();
     let location = marker.place.location;
-    if(!nextRestauraunt.yelp_url()){
-      YELP.search(nextRestauraunt.name(), nextRestauraunt.address())
+    if(!nextRestaurant.yelp_url()){
+      YELP.search(nextRestaurant.name(), nextRestaurant.address())
       .done(function(results){
         if(results['businesses'] && results['businesses'].length > 0){
-          nextRestauraunt.yelp_url(results.businesses[0].url);
-          nextRestauraunt.yelp_img_url(results.businesses[0].rating_img_url);
+          nextRestaurant.yelp_url(results.businesses[0].url);
+          nextRestaurant.yelp_img_url(results.businesses[0].rating_img_url);
         }
       })
       .fail(function(error){
@@ -77,8 +68,8 @@ function AppViewModel(){
       });
     }
 
-    if(nextRestauraunt.flickr_images().length == 0){
-        FLICKR.searchPhotos(location.lat(), location.lng(), nextRestauraunt.name())
+    if(nextRestaurant.flickr_images().length == 0){
+        FLICKR.searchPhotos(location.lat(), location.lng(), nextRestaurant.name())
         .then(function(results){
           if(!results['stat'] || results['stat'] != 'ok'){
             self.errors.push('Something went wrong while trying to fetch flickr photos');
@@ -92,7 +83,7 @@ function AppViewModel(){
             }
           });
 
-          self.currentRestauraunt().flickr_images(flickrImages);
+          self.currentRestaurant().flickr_images(flickrImages);
         })
         .fail(function(error){
           console.log(error);
@@ -109,22 +100,22 @@ function AppViewModel(){
    * Populates the application with initial data from the model
   */
   self.initApp = function(){
-    self.restauraunts().forEach(function(restauraunt,index){
+    self.restaurants().forEach(function(restaurant,index){
       let request = {
         location: Model.starting_point,
         radius: 15000,
-        keyword: restauraunt.address()
+        keyword: restaurant.address()
       };
-      service.nearbySearch(request, self.serviceCallback.bind(null,restauraunt,index));
+      service.nearbySearch(request, self.serviceCallback.bind(null,restaurant,index));
     });
   }
 
   /*
-   * Creates and adds a marker to each restauraunt
+   * Creates and adds a marker to each restaurant
   */
-  self.serviceCallback = function callback(restauraunt, index, results, status){
+  self.serviceCallback = function callback(restaurant, index, results, status){
     if (status != google.maps.places.PlacesServiceStatus.OK){
-      self.errors.push(`Something went wrong while trying to fetch restauraunt details from Google Maps API`);
+      self.errors.push(`Something went wrong while trying to fetch restaurant details from Google Maps API`);
       return;
     }
     let marker = new google.maps.Marker({
@@ -136,10 +127,10 @@ function AppViewModel(){
       animation: google.maps.Animation.DROP
     });
 
-    self.restauraunts()[index].marker(marker);
+    self.restaurants()[index].marker(marker);
 
     google.maps.event.addListener(marker, 'click', function(){
-      self.currentRestauraunt(restauraunt);
+      self.currentRestaurant(restaurant);
     });
   }
 

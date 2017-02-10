@@ -4,7 +4,7 @@ export default
     lat: 47.6126416,
     lng: -122.341657
   },
-  'restauraunts': [
+  'restaurants': [
     {
       name: 'Pike Place Chowder',
       address: 'Pike Place Market, 1530 Post Alley, Seattle, WA 98101'
