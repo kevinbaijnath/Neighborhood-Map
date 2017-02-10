@@ -47,6 +47,10 @@ html, body, .container-fluid, .row, #map {
   margin-right: 5px;
 }
 
+#filter {
+  width: 100%;
+}
+
 @media screen and (max-width:480px) {
     .info-window {
       width: 90px;

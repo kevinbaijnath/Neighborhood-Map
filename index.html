@@ -15,7 +15,9 @@
     <div class="container-fluid remove-padding">
         <div class="row remove-margin">
             <nav class="col-12 col-sm-2 sidebar bg-inverse">
-                <input class="form-control mr-sm-2" type="text" placeholder="Filter Text" data-bind="textInput: filterText">
+                <div class="form-inline">
+                  <input class="form-control" id="filter" type="text" placeholder="Filter Text" data-bind="textInput: filterText">
+                </div>
                 <ul class="list-group" data-bind="foreach: filteredRestaurants">
                     <li class="list-group-item" data-bind="text: name,click: $parent.clickListItem"></li>
                 </ul>

@@ -61,6 +61,8 @@ function AppViewModel(){
         if(results['businesses'] && results['businesses'].length > 0){
           nextRestaurant.yelp_url(results.businesses[0].url);
           nextRestaurant.yelp_img_url(results.businesses[0].rating_img_url);
+        }else{
+          self.errors.push('No data was returned from the Yelp API');
         }
       })
       .fail(function(error){
