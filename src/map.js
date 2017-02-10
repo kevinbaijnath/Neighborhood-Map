@@ -93,6 +93,7 @@ function AppViewModel(){
 
     // animate the marker whenever it is clicked on the map
     animateMarker(marker);
+    map.setCenter(location);
     infoWindow.open(map, marker);
   })
 

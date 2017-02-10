@@ -14688,7 +14688,6 @@ function AppViewModel() {
     });
   }, self);
   self.filteredRestaurants.subscribe(function (newFilteredRestaurants) {
-    console.log(newFilteredRestaurants);
     self.restaurants().forEach(function (restaurant) {
       restaurant.marker().setVisible(newFilteredRestaurants.includes(restaurant));
     });
@@ -14742,6 +14741,7 @@ function AppViewModel() {
 
     // animate the marker whenever it is clicked on the map
     (0, _helpers.animateMarker)(marker);
+    map.setCenter(location);
     infoWindow.open(map, marker);
   });
 
