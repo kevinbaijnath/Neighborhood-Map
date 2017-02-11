@@ -97,7 +97,8 @@ function AppViewModel(){
     animateMarker(marker);
     map.setCenter(location);
     infoWindow.open(map, marker);
-    console.log(INFO_WINDOW);
+    ko.cleanNode($('#infoWindow')[0]); // remove previous button binding
+    ko.applyBindings(self, $('#infoWindow')[0]); // re-apply button binding
   })
 
   /*

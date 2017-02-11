@@ -14762,7 +14762,8 @@ function AppViewModel() {
     (0, _helpers.animateMarker)(marker);
     map.setCenter(location);
     infoWindow.open(map, marker);
-    console.log(_infowindow2.default);
+    _knockout2.default.cleanNode($('#infoWindow')[0]); // remove previous button binding
+    _knockout2.default.applyBindings(self, $('#infoWindow')[0]); // re-apply button binding
   });
 
   /*
