@@ -23,6 +23,13 @@ npm run build
 ```
 * Open the index.html file in a web browser of your choice
 
+### Running the dev server
+* This project uses webpack and webpack-dev-server to enable simplified development
+* To enable hot reloading, run the command below
+```sh
+npm run dev
+```
+
 ## Technologies and APIs used
 * [Knockout.js](http://knockoutjs.com/)
 * [Google Maps](https://developers.google.com/maps/documentation/javascript/)

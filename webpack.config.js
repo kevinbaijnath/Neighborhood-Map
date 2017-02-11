@@ -10,5 +10,9 @@ module.exports = {
     rules: [
       {test: /\.(js)$/, exclude: /node_modules/, use: 'babel-loader'}
     ]
+  },
+  devServer: {
+    compress: true,
+    port: 9000
   }
 };
