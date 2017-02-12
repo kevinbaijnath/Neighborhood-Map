@@ -1,5 +1,6 @@
 import FLICKR_CONFIG from './config/flickr.json';
 import YELP_CONFIG from './config/yelp.json';
+import INFO_WINDOW from './config/infowindow';
 import Model from './model';
 import Restaurant from './classes/restaurant';
 import Yelp from './classes/yelp';
@@ -10,7 +11,6 @@ import ko from 'knockout';
 //constants
 const YELP = new Yelp(YELP_CONFIG);
 const FLICKR = new Flickr(FLICKR_CONFIG);
-const INFO_WINDOW_NODE = $('#infoWindow');
 
 // Google Maps Variables
 let map = null;
@@ -97,6 +97,8 @@ function AppViewModel(){
     animateMarker(marker);
     map.setCenter(location);
     infoWindow.open(map, marker);
+    ko.cleanNode($('#infoWindow')[0]);
+    ko.applyBindings(self, $('#infoWindow')[0]);
   })
 
   /*
@@ -156,7 +158,7 @@ function initMap(){
       center: Model.starting_point
   }));
   infoWindow = (new google.maps.InfoWindow({
-      content: INFO_WINDOW_NODE[0]
+      content: INFO_WINDOW
   }));
 
   service = (new google.maps.places.PlacesService(map));

@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 49);
+/******/ 	return __webpack_require__(__webpack_require__.s = 50);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -3070,7 +3070,7 @@ var URI = (function () {
 if (!COMPILED && typeof module !== "undefined" && "function" === "function") {
     var punycode = __webpack_require__(12);
     module.exports = URI;
-    __webpack_require__(45);
+    __webpack_require__(46);
 }
 
 
@@ -10458,7 +10458,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _oauthSignature = __webpack_require__(44);
+var _oauthSignature = __webpack_require__(45);
 
 var _oauthSignature2 = _interopRequireDefault(_oauthSignature);
 
@@ -10567,6 +10567,20 @@ exports.default = Yelp;
 
 
 Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var INFO_WINDOW = "<div id=\"infoWindow\" class=\"info-window\">\n    <div data-bind=\"with: currentRestaurant\">\n        <div data-bind=\"text: name\" class=\"infowindow-title\"></div>\n        <div data-bind=\"text: address\"></div>\n        <a data-bind=\"attr: { href: yelp_url }\">\n            <img data-bind=\"attr: { src: yelp_img_url }\" />\n        </a>\n        <div id=\"carouselControl\" class=\"carousel slide\" data-ride=\"carousel\" data-bind=\"foreach: flickr_images\">\n            <!-- ko if:($index()===0) -->\n            <div class=\"carousel-item active\">\n              <picture>\n                <source media=\"(max-width: 480px)\" data-bind=\"attr: { srcset: $data.thumbnail }\"/>\n                <img data-bind=\"attr: { src: $data.small }\" />\n              </picture>\n            </div>\n            <!-- /ko -->\n\n            <!-- ko if:($index() > 0) -->\n            <div class=\"carousel-item\">\n              <picture>\n                <source data-bind=\"attr: { media: '(max-width: 480px)', srcset: $data.thumbnail }\"/>\n                <img data-bind=\"attr: { src: $data.small }\" />\n              </picture>\n            </div>\n            <!-- /ko -->\n\n            <a class=\"carousel-control-prev\" href=\"#carouselControl\" role=\"button\" data-slide=\"prev\">\n                <span class=\"carousel-control-prev-icon\" aria-hidden=\"true\"></span>\n                <span class=\"sr-only\">Previous</span>\n            </a>\n            <a class=\"carousel-control-next\" href=\"#carouselControl\" role=\"button\" data-slide=\"next\">\n                <span class=\"carousel-control-next-icon\" aria-hidden=\"true\"></span>\n                <span class=\"sr-only\">Next</span>\n            </a>\n        </div>\n    </div>\n</div>";
+
+exports.default = INFO_WINDOW;
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 /**
@@ -10583,7 +10597,7 @@ function animateMarker(marker) {
 exports.animateMarker = animateMarker;
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10625,7 +10639,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -10634,7 +10648,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -10646,7 +10660,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -10883,7 +10897,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory) {
@@ -11037,7 +11051,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -11108,13 +11122,13 @@ module.exports = {
 }));
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(0), __webpack_require__(5), __webpack_require__(24), __webpack_require__(21), __webpack_require__(2), __webpack_require__(4), __webpack_require__(8), __webpack_require__(10), __webpack_require__(40), __webpack_require__(11), __webpack_require__(42), __webpack_require__(41), __webpack_require__(39), __webpack_require__(7), __webpack_require__(35), __webpack_require__(3), __webpack_require__(1), __webpack_require__(25), __webpack_require__(27), __webpack_require__(26), __webpack_require__(29), __webpack_require__(28), __webpack_require__(30), __webpack_require__(31), __webpack_require__(32), __webpack_require__(34), __webpack_require__(33), __webpack_require__(22), __webpack_require__(20), __webpack_require__(43), __webpack_require__(38), __webpack_require__(37), __webpack_require__(36));
+		module.exports = exports = factory(__webpack_require__(0), __webpack_require__(5), __webpack_require__(25), __webpack_require__(22), __webpack_require__(2), __webpack_require__(4), __webpack_require__(8), __webpack_require__(10), __webpack_require__(41), __webpack_require__(11), __webpack_require__(43), __webpack_require__(42), __webpack_require__(40), __webpack_require__(7), __webpack_require__(36), __webpack_require__(3), __webpack_require__(1), __webpack_require__(26), __webpack_require__(28), __webpack_require__(27), __webpack_require__(30), __webpack_require__(29), __webpack_require__(31), __webpack_require__(32), __webpack_require__(33), __webpack_require__(35), __webpack_require__(34), __webpack_require__(23), __webpack_require__(21), __webpack_require__(44), __webpack_require__(39), __webpack_require__(38), __webpack_require__(37));
 	}
 	else if (typeof define === "function" && define.amd) {
 		// AMD
@@ -11131,7 +11145,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory) {
@@ -11212,7 +11226,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -11295,7 +11309,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -11416,7 +11430,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -11479,7 +11493,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -11524,7 +11538,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -11583,7 +11597,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -11637,7 +11651,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -11686,7 +11700,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -11731,7 +11745,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -11766,7 +11780,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -11816,7 +11830,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -11966,7 +11980,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -12161,7 +12175,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -12358,7 +12372,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -12502,7 +12516,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory) {
@@ -12774,7 +12788,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -12859,7 +12873,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -13187,7 +13201,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -13275,7 +13289,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -14050,7 +14064,7 @@ module.exports = {
 }));
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function() {
@@ -14304,7 +14318,7 @@ module.exports = {
 
 	function HmacSha1(text, key) {
 		// load CryptoJs in the browser or in node
-		this._cryptoJS = isNode ? __webpack_require__(23) : CryptoJS;
+		this._cryptoJS = isNode ? __webpack_require__(24) : CryptoJS;
 		this._text = text || '';
 		this._key = key || '';
 		this._hash = this._cryptoJS.HmacSHA1(this._text, this._key);
@@ -14336,17 +14350,17 @@ module.exports = {
 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ///<reference path="commonjs.d.ts"/>
-__webpack_require__(46);
-__webpack_require__(48);
 __webpack_require__(47);
+__webpack_require__(49);
+__webpack_require__(48);
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ///<reference path="../uri.ts"/>
@@ -14379,7 +14393,7 @@ URI.SCHEMES["http"] = URI.SCHEMES["https"] = {
 
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ///<reference path="../uri.ts"/>
@@ -14542,7 +14556,7 @@ if (typeof COMPILED === "undefined" && typeof URI === "undefined" && "function" 
 
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ///<reference path="../uri.ts"/>
@@ -14621,21 +14635,25 @@ if (typeof COMPILED === "undefined" && typeof URI === "undefined" && "function" 
 
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _flickr = __webpack_require__(18);
+var _flickr = __webpack_require__(19);
 
 var _flickr2 = _interopRequireDefault(_flickr);
 
-var _yelp = __webpack_require__(19);
+var _yelp = __webpack_require__(20);
 
 var _yelp2 = _interopRequireDefault(_yelp);
 
-var _model = __webpack_require__(17);
+var _infowindow = __webpack_require__(16);
+
+var _infowindow2 = _interopRequireDefault(_infowindow);
+
+var _model = __webpack_require__(18);
 
 var _model2 = _interopRequireDefault(_model);
 
@@ -14651,7 +14669,7 @@ var _flickr3 = __webpack_require__(13);
 
 var _flickr4 = _interopRequireDefault(_flickr3);
 
-var _helpers = __webpack_require__(16);
+var _helpers = __webpack_require__(17);
 
 var _knockout = __webpack_require__(9);
 
@@ -14662,7 +14680,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //constants
 var YELP = new _yelp4.default(_yelp2.default);
 var FLICKR = new _flickr4.default(_flickr2.default);
-var INFO_WINDOW_NODE = $('#infoWindow');
 
 // Google Maps Variables
 var map = null;
@@ -14745,6 +14762,8 @@ function AppViewModel() {
     (0, _helpers.animateMarker)(marker);
     map.setCenter(location);
     infoWindow.open(map, marker);
+    _knockout2.default.cleanNode($('#infoWindow')[0]); // remove previous button binding
+    _knockout2.default.applyBindings(self, $('#infoWindow')[0]); // re-apply button binding
   });
 
   /*
@@ -14804,7 +14823,7 @@ function initMap() {
     center: _model2.default.starting_point
   });
   infoWindow = new google.maps.InfoWindow({
-    content: INFO_WINDOW_NODE[0]
+    content: _infowindow2.default
   });
 
   service = new google.maps.places.PlacesService(map);
