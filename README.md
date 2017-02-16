@@ -1,6 +1,6 @@
 # Neighborhood-Map
 
-This application depicts top restaurants in the Seattle area on google maps and enables viewing of
+This application depicts restaurants in the Seattle area on google maps.  Users are able to live filter restaurants as well as view Yelp ratings and Flickr images for each restaurant. 
 
 ## Getting Started
 
