@@ -20,20 +20,47 @@ def yelp_search():
     if not latitude or not longitude:
         abort(404)
 
-    return process_response(yelp.search(latitude, longitude))
+    response = yelp.search(latitude, longitude)
+
+    if response.status_code != requests.codes.ok:
+        abort(response.status_code)
+
+    json_value = response.json()
+    output = { "businesses": [] }
+
+    # Strip out all of the data except the restaurant name and id
+    for restaurant in json_value["businesses"]:
+        print(restaurant)
+        output["businesses"].append({"name": restaurant["name"],"id":restaurant["id"]})
+
+    return jsonify(output)
 
 @app.route('/api/yelp/business/<id>')
 def yelp_business(id):
     if not id:
         abort(404)
 
-    return process_response(yelp.business(id))
+    response = yelp.business(id)
 
-def process_response(response):
     if response.status_code != requests.codes.ok:
         abort(response.status_code)
 
-    return jsonify(response.json())
+    json_value = response.json()
+    categories = [x["title"] for x in json_value["categories"]]
+    output = {
+        json_value["id"]: {
+            "photos": json_value["photos"],
+            "rating": json_value["rating"],
+            "review_count": json_value["review_count"],
+            "url": json_value["url"],
+            "address": json_value["location"]["display_address"],
+            "coordinates": json_value["coordinates"],
+            "is_open_now": json_value["hours"][0]["is_open_now"],
+            "categories": categories
+        }
+    }
+
+    return jsonify(output)
 
 if __name__ == '__main__':
     app.secret_key = 'test'
