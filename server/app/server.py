@@ -1,16 +1,33 @@
-from flask import Flask
-from .config.secrets import FLICKR_KEY, FLICKR_SECRET, YELP_CLIENT_ID, YELP_CLIENT_SECRET
+from flask import Flask, request, abort, jsonify
+import requests
+from config.secrets import FLICKR_KEY, FLICKR_SECRET, YELP_CLIENT_ID, YELP_CLIENT_SECRET
+from classes.yelp import Yelp
 
 app = Flask(__name__)
 app.config.from_pyfile('config\config.py')
-app.config['YELP']['OAUTH']['CLIENT'] = { 'YELP_CLIENT_ID': YELP_CLIENT_ID, 'YELP_CLIENT_SECRET': YELP_CLIENT_SECRET }
+
+# by doing it this way we can enable loading this information from system variables
+app.config['YELP']['OAUTH']['CLIENT'] = { 'ID': YELP_CLIENT_ID, 'SECRET': YELP_CLIENT_SECRET }
 app.config['FLICKR'] = { 'FLICKR_KEY': FLICKR_KEY, 'FLICKR_SECRET': FLICKR_SECRET}
-print(app.config)
 
-#def get_yelp_access_token(YELP_OAUTH):
+yelp = Yelp(app.config['YELP'])
+yelp.search("47.6062","-122.3321")
 
+@app.route('/api/yelp/search')
+def yelp_search():
+    latitude = request.args.get('latitude')
+    longitude = request.args.get('longitude')
 
-print(get_yelp_access_token(app.config['YELP']['OAUTH']))
+    if not latitude or not longitude:
+        abort(404)
+
+    response = yelp.search(latitude, longitude)
+
+    if response.status_code != requests.codes.ok:
+        abort(response.status_code)
+
+    return jsonify(response.json())
+
 if __name__ == '__main__':
     app.secret_key = 'test'
     app.debug = True
