@@ -2,26 +2,30 @@ import requests
 
 class Yelp:
     def __init__(self,yelp_config):
-        self.yelp_config = yelp_config
-        self._access_token = self._get_access_token()
-        self.search_config = self._search_config()
-
-    def _search_config(self):
-        YELP_SEARCH = self.yelp_config['SEARCH']
+        self.search_url = yelp_config['SEARCH']['URL']
+        self.business_url = yelp_config['BUSINESS']['URL']
+        self.search_config = self._search_config(yelp_config['SEARCH'])
+        self._request_session = requests.Session()
+        self._request_session.headers.update({'Authorization': self._get_access_token(yelp_config['OAUTH'])})
+    @staticmethod
+    def _search_config(search_config):
+        YELP_SEARCH = search_config
+        print(YELP_SEARCH)
         return {
             'term': YELP_SEARCH['TERM'],
             'radius': YELP_SEARCH['RADIUS'],
             'limit': YELP_SEARCH['LIMIT']
         }
 
-    def _get_access_token(self):
-        YELP_OAUTH = self.yelp_config['OAUTH']
+    @staticmethod
+    def _get_access_token(oauth_config):
+        YELP_OAUTH = oauth_config
         response = requests.post(YELP_OAUTH['URL'], data={
             'grant_type': YELP_OAUTH['GRANT_TYPE'],
             'client_id': YELP_OAUTH['CLIENT']['ID'],
             'client_secret': YELP_OAUTH['CLIENT']['SECRET']
         })
-        print(response.status_code)
+        print(response)
         if response.status_code != requests.codes.ok:
             return None
 
@@ -29,13 +33,9 @@ class Yelp:
 
         return response_json['token_type'] + ' ' + response_json['access_token']
 
-    def _request(self, url, payload=None):
-        response = requests.get(url, headers={'Authorization': self._access_token}, params=payload)
-        return response
-
     def search(self, latitude, longitude):
         payload = {**self.search_config, 'latitude': latitude, 'longitude': longitude}
-        return self._request(self.yelp_config['SEARCH']['URL'], payload)
+        return self._request_session.get(self.search_url, params=payload)
 
     def business(self, id):
-        return self._request(self.yelp_config['BUSINESS']['URL']+id)
+        return self._request_session.get(self.business_url+id)
