@@ -1,2 +1,12 @@
-FLICKR_KEY = '97a6e627869754ff538ce6412e33be46'
-FLICKR_SECRET = '997e4dbb1bae6bbb'
+YELP = {
+    'OAUTH': {
+        'GRANT_TYPE': 'client_credentials',
+        'URL': 'https://api.yelp.com/oauth2/token'
+    },
+    'SEARCH': {
+        'TERM': 'restaurants',
+        'RADIUS': 16000,
+        'LIMIT': 25,
+        'URL': 'https://api.yelp.com/v3/businesses/search'
+    }
+}
