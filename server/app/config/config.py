@@ -8,5 +8,8 @@ YELP = {
         'RADIUS': 16000,
         'LIMIT': 25,
         'URL': 'https://api.yelp.com/v3/businesses/search'
+    },
+    'BUSINESS': {
+        'URL': 'https://api.yelp.com/v3/businesses/'
     }
 }

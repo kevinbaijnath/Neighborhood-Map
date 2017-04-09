@@ -29,10 +29,13 @@ class Yelp:
 
         return response_json['token_type'] + ' ' + response_json['access_token']
 
-    def _request(self, url, payload):
+    def _request(self, url, payload=None):
         response = requests.get(url, headers={'Authorization': self._access_token}, params=payload)
         return response
 
     def search(self, latitude, longitude):
         payload = {**self.search_config, 'latitude': latitude, 'longitude': longitude}
-        return self.request(self.yelp_config['SEARCH']['URL'], payload)
+        return self._request(self.yelp_config['SEARCH']['URL'], payload)
+
+    def business(self, id):
+        return self._request(self.yelp_config['BUSINESS']['URL']+id)
