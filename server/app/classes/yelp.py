@@ -10,7 +10,6 @@ class Yelp:
     @staticmethod
     def _search_config(search_config):
         YELP_SEARCH = search_config
-        print(YELP_SEARCH)
         return {
             'term': YELP_SEARCH['TERM'],
             'radius': YELP_SEARCH['RADIUS'],
@@ -25,7 +24,6 @@ class Yelp:
             'client_id': YELP_OAUTH['CLIENT']['ID'],
             'client_secret': YELP_OAUTH['CLIENT']['SECRET']
         })
-        print(response)
         if response.status_code != requests.codes.ok:
             return None
 
