@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './RestaurantList.css';
 
 class RestaurantList extends Component {
     render(){
@@ -7,9 +8,9 @@ class RestaurantList extends Component {
                 {
                  this.props.restaurants.map((restaurant, index) => {
                     return (<li className={this.props.activeRestaurantIndex === index ? "list-group-item active" : "list-group-item" }
-                                key={restaurant} 
+                                key={restaurant.id} 
                                 onClick={() => {this.props.setActiveRestaurant(index)}}>
-                            {restaurant}</li>);
+                            {restaurant.name}</li>);
                  })
                 }
             </ul>
