@@ -2,16 +2,22 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Sidebar from './components/Sidebar/Sidebar';
+import { YELP_SEARCH_URL, YELP_BUSINESS_URL } from './config/constants';
 
 class App extends Component {
   constructor(props){
     super(props);
     this.state = {
             activeRestaurantIndex: -1,
-            restaurants: ['test1','test2','test3'],
+            restaurants: [],
             filterText: "",
-            location: null
+            location: {
+              latitude: null,
+              longitude: null
+            }
     }
+
+    this.filteredRestaurants = this.filteredRestaurants.bind(this);
   }
 
   componentDidMount(){
@@ -32,12 +38,34 @@ class App extends Component {
   componentDidUpdate(prevProps, prevState){
     if((prevState.location.latitude !== this.state.location.latitude) ||
        (prevState.location.longitude !== this.state.location.longitude)){
-        
+        const url = `${YELP_SEARCH_URL}?latitude=${this.state.location.latitude}&longitude=${this.state.location.longitude}`;
+        fetch(url).then((response) => {
+          response.json().then((result) => {
+            this.setState({
+              restaurants: result.businesses
+            });
+            console.log(result);
+          })
+        }).catch(function(error){
+          console.log(error)
+        });
     }
   }
   
   setActiveRestaurant(index){
       this.setState({ activeRestaurantIndex: index });
+      const currentRestaurant = this.state.restaurants[index];
+      const url = `${YELP_BUSINESS_URL}/${currentRestaurant.id}`
+      fetch(url).then((response) => {
+        response.json().then((result) => {
+          console.log(result);
+          let updated_restaurants = this.state.restaurants.slice();
+          updated_restaurants[index].business_details = result;
+          this.setState({
+            restaurants: updated_restaurants
+          });
+        });
+      });
   }
 
   setFilterText(event){
@@ -45,8 +73,9 @@ class App extends Component {
   }
 
   filteredRestaurants(){
-    return this.state.restaurants.filter((restaurant) => {
-      return restaurant.includes(this.state.filterText);
+    const restaurants = this.state.restaurants;
+    return restaurants && restaurants.filter((restaurant) => {
+      return restaurant.name.includes(this.state.filterText);
     });
   }
 
