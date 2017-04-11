@@ -9,7 +9,7 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-            activeRestaurantIndex: -1,
+            activeRestaurantIndex: null,
             restaurants: [],
             filterText: "",
             location: {
@@ -45,7 +45,7 @@ class App extends Component {
             this.setState({
               restaurants: result.businesses
             });
-            console.log(result);
+            //console.log(result);
           })
         }).catch(function(error){
           console.log(error)
@@ -56,10 +56,15 @@ class App extends Component {
   setActiveRestaurant(index){
       this.setState({ activeRestaurantIndex: index });
       const currentRestaurant = this.state.restaurants[index];
+
+      if(currentRestaurant.hasOwnProperty("business_details")){
+        return;
+      }
+
       const url = `${YELP_BUSINESS_URL}/${currentRestaurant.id}`
       fetch(url).then((response) => {
         response.json().then((result) => {
-          console.log(result);
+          //console.log(result);
           let updated_restaurants = this.state.restaurants.slice();
           updated_restaurants[index].business_details = result;
           this.setState({
@@ -102,7 +107,9 @@ class App extends Component {
             />
           </div>
           <div className="col-8">
-            <GoogleMap restaurants={this.filteredRestaurants()} />
+            <GoogleMap restaurants={this.filteredRestaurants()}
+                       activeRestaurantIndex={this.state.activeRestaurantIndex}
+            />
           </div>
         </div>
       </div>
