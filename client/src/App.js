@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Sidebar from './components/Sidebar/Sidebar';
+import GoogleMap from './components/GoogleMap/GoogleMap';
 import { YELP_SEARCH_URL, YELP_BUSINESS_URL } from './config/constants';
 
 class App extends Component {
@@ -101,7 +102,7 @@ class App extends Component {
             />
           </div>
           <div className="col-8">
-            The map goes here
+            <GoogleMap restaurants={this.filteredRestaurants()} />
           </div>
         </div>
       </div>
