@@ -30,10 +30,11 @@ def yelp_search():
 
     # Strip out all of the data except the restaurant name and id
     for restaurant in json_value["businesses"]:
-        print(restaurant)
-        output["businesses"].append({"name": restaurant["name"],"id":restaurant["id"]})
+        output["businesses"].append({"name": restaurant["name"],"id":restaurant["id"],"location": restaurant["coordinates"]})
 
-    return jsonify(output)
+    result = jsonify(output)
+    result.headers.add('Access-Control-Allow-Origin', '*')
+    return result
 
 @app.route('/api/yelp/business/<id>')
 def yelp_business(id):
@@ -54,13 +55,14 @@ def yelp_business(id):
             "review_count": json_value["review_count"],
             "url": json_value["url"],
             "address": json_value["location"]["display_address"],
-            "coordinates": json_value["coordinates"],
             "is_open_now": json_value["hours"][0]["is_open_now"],
             "categories": categories
         }
     }
 
-    return jsonify(output)
+    result = jsonify(output)
+    result.headers.add('Access-Control-Allow-Origin', '*')
+    return result
 
 if __name__ == '__main__':
     app.secret_key = 'test'
