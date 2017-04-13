@@ -1,58 +1,21 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import './App.css';
 import Sidebar from './components/Sidebar/Sidebar';
 import GoogleMap from './components/GoogleMap/GoogleMap';
-import { YELP_SEARCH_URL, YELP_BUSINESS_URL } from './config/constants';
+import { connect } from 'react-redux';
+import { setLocation, loadRestaurants} from './actions/actionCreators';
 
 class App extends Component {
-  constructor(props){
-    super(props);
-    this.state = {
-            activeRestaurantIndex: null,
-            restaurants: [],
-            filterText: "",
-            location: {
-              latitude: null,
-              longitude: null
-            }
-    }
-
-    this.filteredRestaurants = this.filteredRestaurants.bind(this);
-  }
-
   componentDidMount(){
     if ("geolocation" in navigator){
       navigator.geolocation.getCurrentPosition((position) => {
-        this.setState({
-          location: {
-            "latitude": position.coords.latitude,
-            "longitude": position.coords.longitude
-          }
-        });
-      }, (error) => {
-        alert("unable to find position");
+        this.props.setLocation(position.coords.latitude,position.coords.longitude);
+        this.props.loadRestaurants();
       });
     }
   }
 
-  componentDidUpdate(prevProps, prevState){
-    if((prevState.location.latitude !== this.state.location.latitude) ||
-       (prevState.location.longitude !== this.state.location.longitude)){
-        const url = `${YELP_SEARCH_URL}?latitude=${this.state.location.latitude}&longitude=${this.state.location.longitude}`;
-        fetch(url).then((response) => {
-          response.json().then((result) => {
-            this.setState({
-              restaurants: result.businesses
-            });
-            //console.log(result);
-          })
-        }).catch(function(error){
-          console.log(error)
-        });
-    }
-  }
-  
+  /*
   setActiveRestaurant(index){
       this.setState({ activeRestaurantIndex: index });
       const currentRestaurant = this.state.restaurants[index];
@@ -84,7 +47,7 @@ class App extends Component {
       return restaurant.name.includes(this.state.filterText);
     });
   }
-
+  */
   render() {
     return (
       <div className="container-fluid">
@@ -99,17 +62,13 @@ class App extends Component {
         </div>
         <div className="row">
           <div className="col-4">
-            <Sidebar restaurants={this.filteredRestaurants()} 
-                     activeRestaurantIndex={this.state.activeRestaurantIndex}
-                     setActiveRestaurant={this.setActiveRestaurant.bind(this)}
-                     filterText={this.state.filterText}
-                     setFilterText={this.setFilterText.bind(this)}
-            />
+            <Sidebar />
           </div>
           <div className="col-8">
+            { /*
             <GoogleMap restaurants={this.filteredRestaurants()}
                        activeRestaurantIndex={this.state.activeRestaurantIndex}
-            />
+            /> */ }
           </div>
         </div>
       </div>
@@ -117,4 +76,15 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {};
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setLocation: (latitude,longitude) => dispatch(setLocation(latitude,longitude)),
+    loadRestaurants: () => dispatch(loadRestaurants())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
