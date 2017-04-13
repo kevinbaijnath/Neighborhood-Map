@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import RestaurantList from '../RestaurantList/RestaurantList';
+import { connect } from 'react-redux';
+import {setFilterText, updateActiveRestaurant} from '../../actions/actionCreators';
 
 class Sidebar extends Component {
     render(){
@@ -12,13 +14,27 @@ class Sidebar extends Component {
                 <div className="form-inline">
                   <input className="form-control" type="text" placeholder="Filter Text" onChange={this.props.setFilterText} />
                 </div>
-                <RestaurantList restaurants={this.props.restaurants} 
-                                setActiveRestaurant={this.props.setActiveRestaurant} 
+                <RestaurantList restaurants={this.props.restaurants}
                                 activeRestaurantIndex={this.props.activeRestaurantIndex}
+                                updateActiveRestaurant={this.props.updateActiveRestaurant}
                 />
             </div>
         );
     }
 }
 
-export default Sidebar
+const mapStateToProps = ({restaurants, activeRestaurantIndex}) => {
+  return {
+    activeRestaurantIndex,
+    restaurants
+  };
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setFilterText: (event) => dispatch(setFilterText(event.target.value)),
+    updateActiveRestaurant: (index) => dispatch(updateActiveRestaurant(index))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
